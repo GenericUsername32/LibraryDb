@@ -1,0 +1,62 @@
+﻿@model LibraryProject.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+                <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Shelf)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Shelf.ShelfName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Shelf.Section)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Shelf.Section.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model.IsAvailable && !Model.IsReserved)
+    {
+        <form asp-action="Borrow">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Borrow" class="btn btn-borrow" /> 
+        </form>
+    }
+    @if (!Model.IsAvailable && !Model.IsReserved)
+    {
+        <form asp-action="Reserve">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Reserve" class="btn btn-borrow" /> 
+        </form>
+    }
+    @if (User.IsInRole("Administrator") || User.IsInRole("Superadministrator"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    }
+    |
+
+
+    <a asp-action="Index">Back to List</a>
+</div>

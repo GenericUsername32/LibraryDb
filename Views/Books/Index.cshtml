@@ -1,0 +1,90 @@
+﻿@model IEnumerable<LibraryProject.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Superadministrator"))
+                    {
+                        <a asp-action="Create">Create New</a>
+                    }
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+
+@*@using (Html.BeginForm("Search", "Books", FormMethod.Post))
+{
+    <fieldset>
+        {   
+            <input id="StudentName" name="@searchTerm" type="text" value="" />
+            <button type="submit" name="searchTerm" value="@searchTerm">Search</button>
+        }
+    </fieldset>
+}*@
+<form asp-controller="Books" asp-action="Index">
+    <p>
+
+    <input type="radio" id="cookbook" name="SearchCategory" value="cookbook"
+         checked>
+    <label for="cookbook">Cookbooks</label>
+    <input type="radio" id="novel" name="SearchCategory" value="novel"
+         checked>
+    <label for="novel">Novels</label>   
+    <input type="radio" id="any" name="SearchCategory" value=""
+         checked>
+    <label for="any">Any Book</label> 
+
+<select name="SearchType">
+  <option value="Title">Title</option>
+  <option value="Author">Author</option>
+
+</select>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            
+                @if(item.IsAvailable && !item.IsReserved)
+                {
+                    <td style='color:green'>Available</td>
+                }
+                else
+                {
+                    <td style='color:red'>Not Available</td>
+                }
+
+            
+            <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Superadministrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>           
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+
+            </td>
+        </tr>
+
+}
+    </tbody>
+</table>

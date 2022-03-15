@@ -1,0 +1,23 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Super Admin Page";
+}
+
+<div class="text-center">
+    @foreach(var user in Model)
+    {
+        
+            <li>
+                <td>
+                @user
+                </td>
+                <td>
+                <a asp-action="Edit" asp-route-id="@Model.IndexOf(user)">Edit</a> 
+                </td>
+            </li>
+
+        
+    }
+
+</div>

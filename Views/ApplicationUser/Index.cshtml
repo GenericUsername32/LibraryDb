@@ -1,0 +1,149 @@
+﻿@model ApplicationUser
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>               
+                Books 
+            </th>
+                <td>
+                Author
+                </td>
+                <td>
+                Due Date
+                </td>
+            
+        </tr>          
+
+    </thead>
+
+    <tbody>
+@foreach(var book in Model.Books)
+{
+    <tr>
+            <td>
+                @Html.DisplayFor(modelItem => book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => book.Author)
+            </td>
+            <td>
+                @String.Format("{0:M/d/yyyy}", book.DueDate.Date)
+            </td>
+
+
+   @* <td></td>*@
+
+   <td>
+    @using (Html.BeginForm("Return", "ApplicationUser", FormMethod.Post))
+{
+    <fieldset>
+           
+                    <input type="hidden" readonly asp-for=@book.Title class="form-control" />
+                    <span asp-validation-for=@book.Title class="text-danger"></span>
+                    <input type="hidden" readonly asp-for=@book.Id class="form-control" />
+                    <span asp-validation-for=@book.Id class="text-danger"></span>
+            <button type="submit" name="Id" value="@book.Id" class="btn btn-borrow">Return</button>        
+    </fieldset>
+}
+</td>
+</tr>
+
+}
+</tbody>
+</table>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>               
+                Reserved Books 
+            </th>
+                <td>
+                Author
+                </td>
+                <td>
+                Availability
+                </td>
+            
+        </tr>          
+
+    </thead>
+
+    <tbody>
+@foreach(var book in Model.ReservedBooks)
+{
+    <tr>
+            <td>
+                @Html.DisplayFor(modelItem => book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => book.Author)
+            </td>
+            
+                @if(book.IsAvailable)
+                {
+                   <td style='color:green'>    
+                       Available
+                   </td>
+                }
+                else
+                {
+                   <td style='color:red'>    
+                       Not Available
+                   </td>
+                }
+                
+            
+
+
+   @* <td></td>*@
+
+                @if (book.IsAvailable && book.IsReserved)
+                {
+                    <td>
+                        @using (Html.BeginForm("Borrow", "ApplicationUser", FormMethod.Post))
+                        {
+                            <fieldset>
+
+                                <input type="hidden" readonly asp-for=@book.Title class="form-control" />
+                                <span asp-validation-for=@book.Title class="text-danger"></span>
+                                <input type="hidden" readonly asp-for=@book.Id class="form-control" />
+                                <span asp-validation-for=@book.Id class="text-danger"></span>
+                                <button type="submit" name="Id" value="@book.Id" class="btn btn-borrow">Borrow</button>        
+                            </fieldset>
+                        }
+                    </td>
+                }
+                                @if (book.IsReserved)
+                {
+                    <td>
+                        @using (Html.BeginForm("UnReserve", "ApplicationUser", FormMethod.Post))
+                        {
+                            <fieldset>
+
+                                <input type="hidden" readonly asp-for=@book.Title class="form-control" />
+                                <span asp-validation-for=@book.Title class="text-danger"></span>
+                                <input type="hidden" readonly asp-for=@book.Id class="form-control" />
+                                <span asp-validation-for=@book.Id class="text-danger"></span>
+                                <button type="submit" name="Id" value="@book.Id" class="btn btn-borrow">Unreserve</button>        
+                            </fieldset>
+                        }
+                    </td>
+                }
+            </tr>
+
+}
+</tbody>
+</table>

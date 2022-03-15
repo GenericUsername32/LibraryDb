@@ -1,0 +1,14 @@
+﻿@model IEnumerable<string>
+
+@{
+}
+<div>
+<select class="form-control" id="Shelf" name="Shelf">
+    @foreach (var shelfName in Model){
+                <option>@shelfName</option> 
+    }
+</select>  
+</div>
+            
+    
+    

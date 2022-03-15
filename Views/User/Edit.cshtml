@@ -1,0 +1,42 @@
+﻿@model Users
+
+@{
+    ViewData["Title"] = "Super Admin Page";
+
+}
+
+
+    <td>
+    @Model.userName
+    </td>
+
+    <td>
+
+    <form asp-action="Edit">
+
+        @for(int i = 0; i < Model.roles.Count(); i++)
+        {
+            <li>
+                    @Model.roles[i]
+                    @*<label asp-for=@Model.roles[i] class="control-label"></label>*@
+                    <input type="checkbox" asp-for=@Model.hasRole[i] class="form-control" />
+                    <span asp-validation-for=@Model.hasRole[i] class="text-danger"></span>
+
+            </li>
+        }
+         
+                    <input type="hidden" readonly asp-for=@Model.userName class="form-control" />
+                    <span asp-validation-for=@Model.userName class="text-danger"></span>
+
+
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+    </form>
+
+    </td>
+
+
